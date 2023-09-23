@@ -1,0 +1,36 @@
+<app-header [headerConfigurations]="headerConfiguration"></app-header>
+<section>
+  <div class="row pt-3">
+    <div class="col">
+      <label for="inputSearch" class="sr-only">Pesquisar</label>
+      <input
+        type="text"
+        id="inputSearch"
+        class="form-control"
+        placeholder="Pesquisar"
+        required
+        autofocus
+      />
+    </div>
+  </div>
+  <ul class="list-unstyled">
+    <li (click)="goToDetails(item.id)" *ngFor="let item of establishments$ | async">
+      <div class="card my-3">
+        <div class="media">
+          <img
+            class="card-img-top"
+            alt="Thumbnail"
+            style="height: 150px; width: 150px; display: block"
+            src="/assets/images/logoCatavento.png"
+          />
+          <div class="media-body p-3">
+            <h5 class="mt-0 mb-1">{{ item.name }}</h5>
+            <p style="margin-bottom: 0;" class="text-body-secondary"><small>{{ item.serviceType }}</small></p>
+            {{ item.description }}
+          </div>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+</section>
