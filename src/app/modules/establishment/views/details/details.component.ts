@@ -7,11 +7,11 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { Establishment } from 'src/app/core/models/establishment.model';
 import { EstablishmentService } from 'src/app/core/services/establishment.service';
-import {} from 'googlemaps';
 import { HeaderComponent } from 'src/app/modules/common/header/header.component';
+import { GoogleMapsService } from 'src/app/core/services/google-maps.service';
 
 @Component({
   selector: 'app-details',
@@ -32,11 +32,11 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   public establishmentId?: string;
 
   @ViewChild('map') mapElement?: ElementRef;
-  map?: google.maps.Map;
 
   constructor(
     private establishmentService: EstablishmentService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private googleMapsService: GoogleMapsService
   ) {
     this.route.data.subscribe((data) => {
       this.establishmentId = data['establishmentId'];
@@ -52,30 +52,20 @@ export class DetailsComponent implements OnInit, AfterViewInit {
         map(
           (establishments) =>
             establishments.filter((establishment) => establishment.id === id)[0]
-        )
+        ),
+        tap((establishment) => {
+          if (establishment) {
+            this.googleMapsService.addMarkerToMap(establishment);
+          }
+        })
       );
   }
 
   @ViewChild('minhaDiv') minhaDiv!: ElementRef;
 
   ngAfterViewInit() {
-    const mapProperties = {
-      center: new google.maps.LatLng(-23.6824262, -46.6910678),
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-    };
-
-    // create a google map with an marker in the center of the map
-
     if (this.mapElement) {
-      this.map = new google.maps.Map(
-        this.mapElement.nativeElement,
-        mapProperties
-      );
-
-      let alo = new google.maps.Marker();
-      alo.setPosition(new google.maps.LatLng(-23.6824262, -46.6910678));
-      alo.setMap(this.map);
+      this.googleMapsService.createMap(this.mapElement);
     }
   }
 }
