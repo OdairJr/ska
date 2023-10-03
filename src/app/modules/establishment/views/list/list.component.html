@@ -22,11 +22,12 @@
         placeholder="Pesquisar"
         required
         autofocus
+        [formControl]="searchControl"
       />
     </div>
   </div>
   <ul class="list-unstyled">
-    <li (click)="goToDetails(item.id)" *ngFor="let item of establishments$ | async">
+    <li (click)="goToDetails(item.id)" *ngFor="let item of establishmentsFiltered$ | async">
       <div class="card my-3">
         <div class="media">
           <img
