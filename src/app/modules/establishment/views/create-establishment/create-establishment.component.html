@@ -1,4 +1,15 @@
-<app-header [headerConfigurations]="headerConfiguration"></app-header>
+<nav class="navbar">
+  <div class="navbar-left">
+      <a routerLink="/establishment"><i class="fas fa-chevron-left navbar-icon"></i></a>
+  </div>
+
+  <label class="navbar-brand text-white">Cadastrar estabelecimento</label>
+
+  <div class="navbar-right" >
+
+  </div>
+</nav>
+
 <form [formGroup]="establishmentForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
       <label for="name">Nome:</label>

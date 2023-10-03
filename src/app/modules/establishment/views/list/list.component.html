@@ -1,7 +1,19 @@
-<app-header [headerConfigurations]="headerConfiguration"></app-header>
+<nav class="navbar">
+  <div class="navbar-left">
+      <a (click)="authService.SignOut()"><i class="fas fa-chevron-left navbar-icon"></i></a>
+  </div>
+
+  <label class="navbar-brand text-white">Estabelecimentos</label>
+
+  <div class="navbar-right" >
+    <a [routerLink]="'/establishment/create'"><i class="fas fa-plus navbar-icon"></i></a>
+  </div>
+</nav>
+
 <section>
   <div class="row pt-3">
     <div class="col">
+
       <label for="inputSearch" class="sr-only">Pesquisar</label>
       <input
         type="text"

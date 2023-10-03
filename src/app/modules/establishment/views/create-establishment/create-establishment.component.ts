@@ -10,8 +10,6 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { Establishment } from 'src/app/core/models/establishment.model';
 import { EstablishmentService } from 'src/app/core/services/establishment.service';
-import { HeaderComponent } from 'src/app/modules/common/header/header.component';
-import { HeaderConfiguration } from 'src/app/modules/common/header/header.model';
 
 @Component({
   selector: 'app-create-establishment',
@@ -23,17 +21,9 @@ import { HeaderConfiguration } from 'src/app/modules/common/header/header.model'
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    HeaderComponent,
   ],
 })
 export class CreateEstablishmentComponent {
-  public headerConfiguration: HeaderConfiguration = {
-    title: 'Cadastrar estabelecimento',
-    hasAddButton: false,
-    hasBackButton: true,
-    backButtonRoute: '/establishment',
-  };
-
   public establishmentForm: FormGroup;
 
   constructor(

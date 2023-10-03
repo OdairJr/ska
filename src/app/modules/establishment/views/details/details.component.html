@@ -1,4 +1,15 @@
-<app-header [headerConfigurations]="headerConfiguration"></app-header>
+<nav class="navbar">
+  <div class="navbar-left">
+      <a routerLink="/establishment"><i class="fas fa-chevron-left navbar-icon"></i></a>
+  </div>
+
+  <label class="navbar-brand text-white">Detalhes do estabelecimento</label>
+
+  <div class="navbar-right" >
+
+  </div>
+</nav>
+
 <ng-container *ngIf="establishments$ | async; let establishment">
   <div class="row">
     <div class="col-md-12">
