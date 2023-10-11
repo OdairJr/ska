@@ -40,14 +40,14 @@
   <h3>Endereço</h3>
   <div class="form-group">
     <label for="zipCode" class="form-label">CEP:</label>
-    <input type="text" class="form-control" id="zipCode" formControlName="zipCode" placeholder="Digite o CEP" required pattern="\d{8}">
+    <input type="text" class="form-control" id="zipCode" formControlName="zipCode"  (blur)="searchCep()" placeholder="Digite o CEP" required pattern="\d{8}">
     <div *ngIf="establishmentForm.get('zipCode')?.invalid && establishmentForm.get('zipCode')?.touched" class="text-danger">
       O CEP é obrigatório.
     </div>
   </div>
   <div class="form-group">
     <label for="street" class="form-label">Rua:</label>
-    <input type="text" class="form-control" id="street" formControlName="street" placeholder="Digite o nome da Rua" required>
+    <input type="text" class="form-control" id="street" formControlName="street" placeholder="Digite o nome da Rua" required >
     <div *ngIf="establishmentForm.get('street')?.invalid && establishmentForm.get('street')?.touched" class="text-danger">
       O nome da rua é obrigatório.
     </div>
@@ -65,21 +65,21 @@
   </div>
   <div class="form-group">
     <label for="neighborhood" class="form-label">Bairro:</label>
-    <input type="text" class="form-control" id="neighborhood" formControlName="neighborhood" placeholder="Digite o Bairro" required>
+    <input type="text" class="form-control" id="neighborhood" formControlName="neighborhood" placeholder="Digite o Bairro" required >
     <div *ngIf="establishmentForm.get('neighborhood')?.invalid && establishmentForm.get('neighborhood')?.touched" class="text-danger">
       O bairro é obrigatório.
     </div>
   </div>
   <div class="form-group">
     <label for="city" class="form-label">Cidade:</label>
-    <input type="text" class="form-control" id="city" formControlName="city" placeholder="Digite a cidade" required>
+    <input type="text" class="form-control" id="city"  formControlName="city" placeholder="Digite a cidade" required>
     <div *ngIf="establishmentForm.get('city')?.invalid && establishmentForm.get('city')?.touched" class="text-danger">
       A cidade é obrigatória.
     </div>
   </div>
   <div class="form-group">
     <label for="state" class="form-label">Estado:</label>
-    <input type="text" class="form-control" id="state" formControlName="state" placeholder="Digite o Estado" required>
+    <input type="text" class="form-control" id="state" formControlName="state" placeholder="Digite o Estado" required >
     <div *ngIf="establishmentForm.get('state')?.invalid && establishmentForm.get('state')?.touched" class="text-danger">
       O estado é obrigatório.
     </div>

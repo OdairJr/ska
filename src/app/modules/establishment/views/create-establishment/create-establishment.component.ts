@@ -1,3 +1,4 @@
+import { FindCEPService } from './../../../../core/services/find-cep.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
@@ -9,10 +10,11 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Establishment } from 'src/app/core/models/establishment.model';
+import { Address } from 'src/app/core/models/address.model';
 import { EstablishmentService } from 'src/app/core/services/establishment.service';
 import { HeaderComponent } from 'src/app/modules/common/header/header.component';
 import { HeaderConfiguration } from 'src/app/modules/common/header/header.model';
-
+import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-create-establishment',
   standalone: true,
@@ -24,9 +26,12 @@ import { HeaderConfiguration } from 'src/app/modules/common/header/header.model'
     FormsModule,
     ReactiveFormsModule,
     HeaderComponent,
+    HttpClientModule
   ],
 })
 export class CreateEstablishmentComponent {
+
+
   public headerConfiguration: HeaderConfiguration = {
     title: 'Cadastrar estabelecimento',
     hasAddButton: false,
@@ -39,7 +44,8 @@ export class CreateEstablishmentComponent {
   constructor(
     private fb: FormBuilder,
     private establishmentService: EstablishmentService,
-    private router: Router
+    private router: Router,
+    private findCEPService: FindCEPService
   ) {
     this.establishmentForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -60,6 +66,9 @@ export class CreateEstablishmentComponent {
       image: [''],
     });
   }
+
+
+
 
   public onSubmit() {
     if (this.establishmentForm?.valid) {
@@ -88,4 +97,26 @@ export class CreateEstablishmentComponent {
       image: this.establishmentForm?.get('image')?.value,
     };
   }
+
+  public searchCep() {
+    const zipCode = this.establishmentForm?.get('zipCode')?.value;
+    this.findCEPService.getCep(zipCode).subscribe((cepData) => {
+       // Verifica se cepData não é nulo antes de definir os valores
+       if (cepData) {
+          this.populateAddressFields(cepData);
+       }
+    });
+ }
+
+ private populateAddressFields(cepData: Address) {
+  this.establishmentForm.patchValue({
+     street: cepData.logradouro,
+     complement: cepData.complemento,
+     neighborhood: cepData.bairro,
+     city: cepData.localidade,
+     state: cepData.uf,
+     zipCode: cepData.cep,
+  });
+}
+
 }
