@@ -30,7 +30,7 @@ import { CpfCnpjValidator } from 'src/app/core/validators/cpf-cnpj.validator';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-HttpClientModule,
+    HttpClientModule,
     CpfCnpjMaskDirective,
     CpfCnpjValidatorDirective,
     PhoneMaskDirective,
