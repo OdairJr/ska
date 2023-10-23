@@ -1,90 +1,111 @@
-<app-header [headerConfigurations]="headerConfiguration"></app-header>
+<nav class="navbar">
+  <div class="navbar-left">
+      <a routerLink="/establishment"><i class="fas fa-chevron-left navbar-icon"></i></a>
+  </div>
+
+  <label class="navbar-brand">Cadastrar estabelecimento</label>
+
+  <div class="navbar-right" >
+
+  </div>
+</nav>
+
 <form [formGroup]="establishmentForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
-      <label for="name">Nome:</label>
+      <label for="name" class="form-label">Nome:</label>
       <input type="text" class="form-control" id="name" formControlName="name" placeholder="Digite o nome">
       <div *ngIf="establishmentForm.get('name')?.invalid && establishmentForm.get('name')?.touched" class="text-danger">
           Nome é obrigatório.
       </div>
   </div>
   <div class="form-group">
-      <label for="cpfCnpj">CPF/CNPJ:</label>
-      <input type="text" class="form-control" id="cpfCnpj" formControlName="cpfCnpj" placeholder="Digite o CPF ou CNPJ">
+      <label class="form-label" for="cpfCnpj">CPF/CNPJ:</label>
+      <input name="cpfCnpj"  type="text"  nccCpfCnpjValidator  nccCpfCnpjMask type="text" class="form-control" id="cpfCnpj" formControlName="cpfCnpj" maxlength="16" placeholder="Digite o CPF ou CNPJ">
       <div *ngIf="establishmentForm.get('cpfCnpj')?.invalid && establishmentForm.get('cpfCnpj')?.touched" class="text-danger">
-          Por favor, digite um CPF ou CNPJ válido (11 dígitos).
+          Por favor, digite um CPF ou CNPJ válido.
       </div>
   </div>
   <div class="form-group">
-      <label for="description">Descrição:</label>
+      <label class="form-label" for="description">Descrição:</label>
       <textarea class="form-control" id="description" formControlName="description" placeholder="Digite a descrição"></textarea>
       <div *ngIf="establishmentForm.get('description')?.invalid && establishmentForm.get('description')?.touched" class="text-danger">
           Descrição é obrigatória.
       </div>
   </div>
   <div class="form-group">
-      <label for="phone">Telefone:</label>
-      <input type="text" class="form-control" id="phone" formControlName="phone" placeholder="Digite o número de telefone">
+      <label class="form-label" for="phone">Telefone:</label>
+      <input type="text" class="form-control" id="phone" formControlName="phone" placeholder="Digite o número de telefone" appPhoneMask maxlength="15">
       <div *ngIf="establishmentForm.get('phone')?.invalid && establishmentForm.get('phone')?.touched" class="text-danger">
-          Por favor, digite um número de telefone válido (10 dígitos).
+          Por favor, digite um número de telefone válido.
       </div>
   </div>
   <div class="form-group">
-      <label for="serviceType">Tipo de Serviço:</label>
-      <input type="text" class="form-control" id="serviceType" formControlName="serviceType" placeholder="Digite o tipo de serviço">
+      <label class="form-label" for="serviceType">Tipo de Serviço:</label>
+      <select class="form-select" id="serviceType" formControlName="serviceType" aria-label="Selecione o tipo de serviço">
+        <option selected>Selecione o tipo de serviço</option>
+        <option value="1">Oficina</option>
+        <option value="2">Funilaria</option>
+        <option value="3">Autopeças</option>
+      </select>
       <div *ngIf="establishmentForm.get('serviceType')?.invalid && establishmentForm.get('serviceType')?.touched" class="text-danger">
           Tipo de serviço é obrigatório.
       </div>
   </div>
 
+  <label class="file mt-4">
+    <input class="form-label" type="file" id="file" accept="image/*" (change)="handleInputChange($event)">
+    <span class="file-custom">{{ imageName }}</span>
+  </label>
+
   <hr style="color: white;">
   <h3>Endereço</h3>
   <div class="form-group">
-    <label for="zipCode" class="form-label">CEP:</label>
-    <input type="text" class="form-control" id="zipCode" formControlName="zipCode"  (blur)="searchCep()" placeholder="Digite o CEP" required pattern="\d{8}">
+    <label class="form-label" for="zipCode">CEP:</label>
+    <input appCepMask type="text" class="form-control" id="zipCode" formControlName="zipCode" (blur)="searchCep()" placeholder="Digite o CEP" required>
     <div *ngIf="establishmentForm.get('zipCode')?.invalid && establishmentForm.get('zipCode')?.touched" class="text-danger">
-      O CEP é obrigatório.
+      Por favor, digite um CEP válido.
     </div>
   </div>
   <div class="form-group">
-    <label for="street" class="form-label">Rua:</label>
-    <input type="text" class="form-control" id="street" formControlName="street" placeholder="Digite o nome da Rua" required >
+    <label class="form-label" for="street">Rua:</label>
+    <input type="text" class="form-control" id="street" formControlName="street" placeholder="Digite o nome da Rua" required>
     <div *ngIf="establishmentForm.get('street')?.invalid && establishmentForm.get('street')?.touched" class="text-danger">
       O nome da rua é obrigatório.
     </div>
   </div>
   <div class="form-group">
-    <label for="number" class="form-label">Número:</label>
+    <label class="form-label" for="number">Número:</label>
     <input type="text" class="form-control" id="number" formControlName="number" placeholder="Digite o número" required>
     <div *ngIf="establishmentForm.get('number')?.invalid && establishmentForm.get('number')?.touched" class="text-danger">
       O número é obrigatório.
     </div>
   </div>
   <div class="form-group">
-    <label for="complement" class="form-label">Complemento:</label>
+    <label class="form-label" for="complement">Complemento:</label>
     <input type="text" class="form-control" id="complement" formControlName="complement" placeholder="Digite o complemento">
   </div>
   <div class="form-group">
-    <label for="neighborhood" class="form-label">Bairro:</label>
-    <input type="text" class="form-control" id="neighborhood" formControlName="neighborhood" placeholder="Digite o Bairro" required >
+    <label class="form-label" for="neighborhood">Bairro:</label>
+    <input type="text" class="form-control" id="neighborhood" formControlName="neighborhood" placeholder="Digite o Bairro" required>
     <div *ngIf="establishmentForm.get('neighborhood')?.invalid && establishmentForm.get('neighborhood')?.touched" class="text-danger">
       O bairro é obrigatório.
     </div>
   </div>
   <div class="form-group">
-    <label for="city" class="form-label">Cidade:</label>
-    <input type="text" class="form-control" id="city"  formControlName="city" placeholder="Digite a cidade" required>
+    <label class="form-label" for="city">Cidade:</label>
+    <input type="text" class="form-control" id="city" formControlName="city" placeholder="Digite a cidade" required>
     <div *ngIf="establishmentForm.get('city')?.invalid && establishmentForm.get('city')?.touched" class="text-danger">
       A cidade é obrigatória.
     </div>
   </div>
   <div class="form-group">
-    <label for="state" class="form-label">Estado:</label>
-    <input type="text" class="form-control" id="state" formControlName="state" placeholder="Digite o Estado" required >
+    <label class="form-label" for="state">Estado:</label>
+    <input type="text" class="form-control" id="state" formControlName="state" placeholder="Digite o Estado" required>
     <div *ngIf="establishmentForm.get('state')?.invalid && establishmentForm.get('state')?.touched" class="text-danger">
       O estado é obrigatório.
     </div>
   </div>
 </form>
 <div class="d-flex justify-content-center mt-2 pb-2">
-  <button (click)="onSubmit()" class="btn btn-primary">Cadastrar</button>
+  <button (click)="onSubmit()" class="btn btn-primary" [disabled]="establishmentForm.invalid">Cadastrar</button>
 </div>

@@ -1,0 +1,8 @@
+<div class="container">
+  <div class="center-content">
+      <img src="/assets/images/logoCatavento.png" alt="Logo da Empresa" class="logo">
+      <h1 class="text-center">Obrigado por se registrar!</h1>
+      <p class="text-center">Seu registro foi concluído com sucesso.</p>
+      <p class="text-center" *ngIf="authService.userData as user">Nós enviamos um email para <strong>{{user.email}}</strong>, por favor acesse seu email e click no link para validar sua conta.</p>
+  </div>
+</div>

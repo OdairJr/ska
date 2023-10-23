@@ -7,14 +7,19 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
+  MaxLengthValidator,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { CepMaskDirective } from 'src/app/core/directives/cep-mask.directive';
+import { CpfCnpjMaskDirective } from 'src/app/core/directives/cpf-cnpj-mask.directive';
+import { CpfCnpjValidatorDirective } from 'src/app/core/directives/cpf-cnpj-validator.directive';
+import { PhoneMaskDirective } from 'src/app/core/directives/phone-mask.directive';
 import { Establishment } from 'src/app/core/models/establishment.model';
 import { Address } from 'src/app/core/models/address.model';
 import { EstablishmentService } from 'src/app/core/services/establishment.service';
-import { HeaderComponent } from 'src/app/modules/common/header/header.component';
-import { HeaderConfiguration } from 'src/app/modules/common/header/header.model';
 import { HttpClientModule } from '@angular/common/http';
+import { CpfCnpjValidator } from 'src/app/core/validators/cpf-cnpj.validator';
+
 @Component({
   selector: 'app-create-establishment',
   standalone: true,
@@ -25,21 +30,16 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    HeaderComponent,
-    HttpClientModule
+HttpClientModule,
+    CpfCnpjMaskDirective,
+    CpfCnpjValidatorDirective,
+    PhoneMaskDirective,
+    CepMaskDirective
   ],
 })
 export class CreateEstablishmentComponent {
-
-
-  public headerConfiguration: HeaderConfiguration = {
-    title: 'Cadastrar estabelecimento',
-    hasAddButton: false,
-    hasBackButton: true,
-    backButtonRoute: '/establishment',
-  };
-
   public establishmentForm: FormGroup;
+  public imageName = 'Selecione uma foto';
 
   constructor(
     private fb: FormBuilder,
@@ -49,7 +49,10 @@ export class CreateEstablishmentComponent {
   ) {
     this.establishmentForm = this.fb.group({
       name: ['', [Validators.required]],
-      cpfCnpj: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
+      cpfCnpj: [
+        '',
+        [Validators.required, CpfCnpjValidator.validate],
+      ],
       description: ['', [Validators.required]],
       street: ['', Validators.required],
       number: ['', Validators.required],
@@ -57,10 +60,19 @@ export class CreateEstablishmentComponent {
       neighborhood: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
-      zipCode: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
+      zipCode: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[0-9]{5}-[0-9]{3}$/)
+        ],
+      ],
       phone: [
         '',
-        [Validators.required, Validators.pattern(/^\(\d{2}\)\s\d{4,5}-\d{4}$/)],
+        [
+          Validators.required,
+          Validators.pattern(/^\(\d{2}\)\s\d{4,5}-\d{4}$/)
+        ],
       ],
       serviceType: ['', [Validators.required]],
       image: [''],
@@ -73,8 +85,11 @@ export class CreateEstablishmentComponent {
   public onSubmit() {
     if (this.establishmentForm?.valid) {
       const establishment = this.mapFormToEstablishment();
-      this.establishmentService.create(establishment);
-      this.router.navigate(['/establishment']);
+      this.establishmentService.create(establishment).subscribe({
+        next: () => {
+          this.router.navigate(['/establishment']);
+        },
+      });
     }
   }
 
@@ -118,5 +133,26 @@ export class CreateEstablishmentComponent {
      zipCode: cepData.cep,
   });
 }
+
+  public handleInputChange(e) {
+    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+    var pattern = /image-*/;
+    var reader = new FileReader();
+    if (!file.type.match(pattern)) {
+      alert('invalid format');
+      return;
+    }
+
+    this.imageName = file.name;
+
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+  }
+
+  private _handleReaderLoaded(e) {
+    let reader = e.target;
+
+    this.establishmentForm.get('image').setValue(reader.result);
+  }
 
 }

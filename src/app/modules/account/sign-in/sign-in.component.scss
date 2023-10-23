@@ -48,6 +48,9 @@ body {
   border-top-right-radius: 0;
 }
 
-label, p, h1, h2, h3 {
-  color: white !important;
+.image {
+  transform: scale(1.5);
+  margin-top: 24px;
+  width: 250px;
+  height: 250px;
 }

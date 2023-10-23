@@ -1,20 +1,33 @@
-<app-header [headerConfigurations]="headerConfiguration"></app-header>
+<nav class="navbar">
+  <div class="navbar-left">
+      <a (click)="authService.SignOut()"><i class="fas fa-chevron-left navbar-icon"></i></a>
+  </div>
+
+  <label class="navbar-brand">Serviços Automotivos</label>
+
+  <div class="navbar-right" >
+    <a [routerLink]="'/establishment/create'"><i class="fas fa-plus navbar-icon"></i></a>
+  </div>
+</nav>
+
 <section>
   <div class="row pt-3">
     <div class="col">
-      <label for="inputSearch" class="sr-only">Pesquisar</label>
+
+      <label for="inputSearch" class="sr-only">Pesquisar estabelecimento</label>
       <input
         type="text"
         id="inputSearch"
         class="form-control"
-        placeholder="Pesquisar"
+        placeholder="Pesquisar estabelecimento"
         required
         autofocus
+        [formControl]="searchControl"
       />
     </div>
   </div>
   <ul class="list-unstyled">
-    <li (click)="goToDetails(item.id)" *ngFor="let item of establishments$ | async">
+    <li (click)="goToDetails(item.id)" *ngFor="let item of establishmentsFiltered$ | async">
       <div class="card my-3">
         <div class="media">
           <img

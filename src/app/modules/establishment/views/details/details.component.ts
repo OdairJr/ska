@@ -10,7 +10,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
 import { Establishment } from 'src/app/core/models/establishment.model';
 import { EstablishmentService } from 'src/app/core/services/establishment.service';
-import { HeaderComponent } from 'src/app/modules/common/header/header.component';
 import { GoogleMapsService } from 'src/app/core/services/google-maps.service';
 
 @Component({
@@ -18,7 +17,7 @@ import { GoogleMapsService } from 'src/app/core/services/google-maps.service';
   standalone: true,
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
-  imports: [CommonModule, RouterModule, HeaderComponent],
+  imports: [CommonModule, RouterModule],
 })
 export class DetailsComponent implements OnInit, AfterViewInit {
   public headerConfiguration = {
