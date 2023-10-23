@@ -1,3 +1,4 @@
+import { FindCEPService } from './../../../../core/services/find-cep.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
@@ -14,7 +15,9 @@ import { CpfCnpjMaskDirective } from 'src/app/core/directives/cpf-cnpj-mask.dire
 import { CpfCnpjValidatorDirective } from 'src/app/core/directives/cpf-cnpj-validator.directive';
 import { PhoneMaskDirective } from 'src/app/core/directives/phone-mask.directive';
 import { Establishment } from 'src/app/core/models/establishment.model';
+import { Address } from 'src/app/core/models/address.model';
 import { EstablishmentService } from 'src/app/core/services/establishment.service';
+import { HttpClientModule } from '@angular/common/http';
 import { CpfCnpjValidator } from 'src/app/core/validators/cpf-cnpj.validator';
 
 @Component({
@@ -27,6 +30,7 @@ import { CpfCnpjValidator } from 'src/app/core/validators/cpf-cnpj.validator';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+HttpClientModule,
     CpfCnpjMaskDirective,
     CpfCnpjValidatorDirective,
     PhoneMaskDirective,
@@ -40,7 +44,8 @@ export class CreateEstablishmentComponent {
   constructor(
     private fb: FormBuilder,
     private establishmentService: EstablishmentService,
-    private router: Router
+    private router: Router,
+    private findCEPService: FindCEPService
   ) {
     this.establishmentForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -74,6 +79,9 @@ export class CreateEstablishmentComponent {
     });
   }
 
+
+
+
   public onSubmit() {
     if (this.establishmentForm?.valid) {
       const establishment = this.mapFormToEstablishment();
@@ -105,6 +113,27 @@ export class CreateEstablishmentComponent {
     };
   }
 
+  public searchCep() {
+    const zipCode = this.establishmentForm?.get('zipCode')?.value;
+    this.findCEPService.getCep(zipCode).subscribe((cepData) => {
+       // Verifica se cepData não é nulo antes de definir os valores
+       if (cepData) {
+          this.populateAddressFields(cepData);
+       }
+    });
+ }
+
+ private populateAddressFields(cepData: Address) {
+  this.establishmentForm.patchValue({
+     street: cepData.logradouro,
+     complement: cepData.complemento,
+     neighborhood: cepData.bairro,
+     city: cepData.localidade,
+     state: cepData.uf,
+     zipCode: cepData.cep,
+  });
+}
+
   public handleInputChange(e) {
     var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
     var pattern = /image-*/;
@@ -125,4 +154,5 @@ export class CreateEstablishmentComponent {
 
     this.establishmentForm.get('image').setValue(reader.result);
   }
+
 }

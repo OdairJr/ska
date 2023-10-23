@@ -61,7 +61,7 @@
   <h3>Endereço</h3>
   <div class="form-group">
     <label class="form-label" for="zipCode">CEP:</label>
-    <input appCepMask type="text" class="form-control" id="zipCode" formControlName="zipCode" placeholder="Digite o CEP" required>
+    <input appCepMask type="text" class="form-control" id="zipCode" formControlName="zipCode" (blur)="searchCep()" placeholder="Digite o CEP" required>
     <div *ngIf="establishmentForm.get('zipCode')?.invalid && establishmentForm.get('zipCode')?.touched" class="text-danger">
       Por favor, digite um CEP válido.
     </div>
