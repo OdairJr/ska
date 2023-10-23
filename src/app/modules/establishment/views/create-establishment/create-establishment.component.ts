@@ -6,10 +6,16 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
+  MaxLengthValidator,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { CepMaskDirective } from 'src/app/core/directives/cep-mask.directive';
+import { CpfCnpjMaskDirective } from 'src/app/core/directives/cpf-cnpj-mask.directive';
+import { CpfCnpjValidatorDirective } from 'src/app/core/directives/cpf-cnpj-validator.directive';
+import { PhoneMaskDirective } from 'src/app/core/directives/phone-mask.directive';
 import { Establishment } from 'src/app/core/models/establishment.model';
 import { EstablishmentService } from 'src/app/core/services/establishment.service';
+import { CpfCnpjValidator } from 'src/app/core/validators/cpf-cnpj.validator';
 
 @Component({
   selector: 'app-create-establishment',
@@ -21,10 +27,15 @@ import { EstablishmentService } from 'src/app/core/services/establishment.servic
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    CpfCnpjMaskDirective,
+    CpfCnpjValidatorDirective,
+    PhoneMaskDirective,
+    CepMaskDirective
   ],
 })
 export class CreateEstablishmentComponent {
   public establishmentForm: FormGroup;
+  public imageName = 'Selecione uma foto';
 
   constructor(
     private fb: FormBuilder,
@@ -32,21 +43,33 @@ export class CreateEstablishmentComponent {
     private router: Router
   ) {
     this.establishmentForm = this.fb.group({
-      name: ['', [Validators.required]],
-      cpfCnpj: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
-      description: ['', [Validators.required]],
-      street: ['', Validators.required],
-      number: ['', Validators.required],
-      complement: [''],
-      neighborhood: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      zipCode: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
+      name: ['Teste Odair', [Validators.required]],
+      cpfCnpj: [
+        '',
+        [Validators.required, CpfCnpjValidator.validate],
+      ],
+      description: ['Desc Teste', [Validators.required]],
+      street: ['Rua teste', Validators.required],
+      number: ['1234', Validators.required],
+      complement: ['casa'],
+      neighborhood: ['caiçara', Validators.required],
+      city: ['PG', Validators.required],
+      state: ['SP', Validators.required],
+      zipCode: [
+        '11706-100',
+        [
+          Validators.required,
+          Validators.pattern(/^[0-9]{5}-[0-9]{3}$/)
+        ],
+      ],
       phone: [
         '',
-        [Validators.required, Validators.pattern(/^\(\d{2}\)\s\d{4,5}-\d{4}$/)],
+        [
+          Validators.required,
+          Validators.pattern(/^\(\d{2}\)\s\d{4,5}-\d{4}$/)
+        ],
       ],
-      serviceType: ['', [Validators.required]],
+      serviceType: ['Soft', [Validators.required]],
       image: [''],
     });
   }
@@ -54,8 +77,11 @@ export class CreateEstablishmentComponent {
   public onSubmit() {
     if (this.establishmentForm?.valid) {
       const establishment = this.mapFormToEstablishment();
-      this.establishmentService.create(establishment);
-      this.router.navigate(['/establishment']);
+      this.establishmentService.create(establishment).subscribe({
+        next: () => {
+          this.router.navigate(['/establishment']);
+        },
+      });
     }
   }
 
@@ -77,5 +103,26 @@ export class CreateEstablishmentComponent {
       serviceType: this.establishmentForm?.get('serviceType')?.value,
       image: this.establishmentForm?.get('image')?.value,
     };
+  }
+
+  public handleInputChange(e) {
+    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+    var pattern = /image-*/;
+    var reader = new FileReader();
+    if (!file.type.match(pattern)) {
+      alert('invalid format');
+      return;
+    }
+
+    this.imageName = file.name;
+
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+  }
+
+  private _handleReaderLoaded(e) {
+    let reader = e.target;
+
+    this.establishmentForm.get('image').setValue(reader.result);
   }
 }

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --base-href \"https://odairjr.github.io/ska/\"",
+    "build": "ng build",
     "publish": "npx angular-cli-ghpages --dir=dist/ska",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

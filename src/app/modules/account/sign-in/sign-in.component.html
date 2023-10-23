@@ -1,12 +1,67 @@
 <div class="text-center">
   <div class="form-signin">
-    <img src="/assets/images/logoCatavento.png" alt="" width="250px" height="250px">
-    <h1 class="h3 mb-3 font-weight-normal">Bem vindo!</h1>
+    <!-- <style>
+      .img-container {
+        width: 250px;
+        height: 250px;
+        overflow: hidden;
+      }
+
+      .img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: none; /* Remove o dimensionamento automático */
+        transform: scale(
+          1.5
+        ); /* Aumenta o zoom em 150%, ajuste conforme necessário */
+        transform-origin: center center; /* Mantém o ponto de foco centralizado */
+      }
+    </style>
+
+<div class="img-container">
+  <img
+  src="/assets/images/logoCatavento.png"
+  alt=""
+  width="250px"
+  height="250px"
+/>
+</div> -->
+
+<img
+  src="/assets/images/logoCatavento.png"
+  alt=""
+  width="250px"
+  height="250px"
+  class="image"
+/>
+    <h1 class="h3 mb-3 font-weight-normal" style="margin-top: -45px;">Bem vindo!</h1>
     <label for="inputEmail" class="sr-only">Email</label>
-    <input #userName type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus value="odairjunior.oficial@hotmail.com">
+    <input
+      #userName
+      type="email"
+      id="inputEmail"
+      class="form-control"
+      placeholder="Email"
+      required
+      autofocus
+      value="odairjunior.oficial@hotmail.com"
+    />
     <label for="inputPassword" class="sr-only">Senha</label>
-    <input #userPassword type="password" id="inputPassword" class="form-control" placeholder="Senha" required value="odairjunior.oficial@hotmail.com">
-    <button (click)="authService.SignIn(userName.value, userPassword.value)" class="btn btn-lg btn-primary btn-block">Entrar</button>
+    <input
+      #userPassword
+      type="password"
+      id="inputPassword"
+      class="form-control"
+      placeholder="Senha"
+      required
+      value="odairjunior.oficial@hotmail.com"
+    />
+    <button
+      (click)="authService.SignIn(userName.value, userPassword.value)"
+      class="btn btn-lg btn-primary btn-block"
+    >
+      Entrar
+    </button>
     <!--  -->
     <div class="mb-3 mt-3">
       <label>Não tem conta? <a [routerLink]="'/sign-up'">Cadastre-se</a></label>
