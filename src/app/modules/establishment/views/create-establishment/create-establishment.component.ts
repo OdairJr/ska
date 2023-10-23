@@ -43,20 +43,20 @@ export class CreateEstablishmentComponent {
     private router: Router
   ) {
     this.establishmentForm = this.fb.group({
-      name: ['Teste Odair', [Validators.required]],
+      name: ['', [Validators.required]],
       cpfCnpj: [
         '',
         [Validators.required, CpfCnpjValidator.validate],
       ],
-      description: ['Desc Teste', [Validators.required]],
-      street: ['Rua teste', Validators.required],
-      number: ['1234', Validators.required],
-      complement: ['casa'],
-      neighborhood: ['caiçara', Validators.required],
-      city: ['PG', Validators.required],
-      state: ['SP', Validators.required],
+      description: ['', [Validators.required]],
+      street: ['', Validators.required],
+      number: ['', Validators.required],
+      complement: [''],
+      neighborhood: ['', Validators.required],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
       zipCode: [
-        '11706-100',
+        '',
         [
           Validators.required,
           Validators.pattern(/^[0-9]{5}-[0-9]{3}$/)
@@ -69,7 +69,7 @@ export class CreateEstablishmentComponent {
           Validators.pattern(/^\(\d{2}\)\s\d{4,5}-\d{4}$/)
         ],
       ],
-      serviceType: ['Soft', [Validators.required]],
+      serviceType: ['', [Validators.required]],
       image: [''],
     });
   }

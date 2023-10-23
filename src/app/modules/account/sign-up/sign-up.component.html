@@ -3,9 +3,9 @@
     <img src="/assets/images/logoCatavento.png" class="image" alt="" width="250px" height="250px">
     <h1 class="h3 mb-3 font-weight-normal" style="margin-top: -45px;">Crie sua conta</h1>
     <label for="inputEmail" class="sr-only">Email</label>
-    <input #userEmail type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus value="odairjunior.oficial@hotmail.com">
+    <input #userEmail type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
     <label for="inputPassword" class="sr-only">Senha</label>
-    <input #userPwd type="password" id="inputPassword" class="form-control" placeholder="Senha" required value="odairjunior.oficial@hotmail.com">
+    <input #userPwd type="password" id="inputPassword" class="form-control" placeholder="Senha" required>
 
     <button (click)="authService.SignUp(userEmail.value, userPwd.value)" class="btn btn-lg btn-primary btn-block">Criar</button>
 
