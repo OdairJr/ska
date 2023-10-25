@@ -19,6 +19,8 @@ import { Address } from 'src/app/core/models/address.model';
 import { EstablishmentService } from 'src/app/core/services/establishment.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CpfCnpjValidator } from 'src/app/core/validators/cpf-cnpj.validator';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-create-establishment',
@@ -34,7 +36,7 @@ import { CpfCnpjValidator } from 'src/app/core/validators/cpf-cnpj.validator';
     CpfCnpjMaskDirective,
     CpfCnpjValidatorDirective,
     PhoneMaskDirective,
-    CepMaskDirective
+    CepMaskDirective,
   ],
 })
 export class CreateEstablishmentComponent {
@@ -45,14 +47,12 @@ export class CreateEstablishmentComponent {
     private fb: FormBuilder,
     private establishmentService: EstablishmentService,
     private router: Router,
-    private findCEPService: FindCEPService
+    private findCEPService: FindCEPService,
+    private storage: AngularFireStorage
   ) {
     this.establishmentForm = this.fb.group({
       name: ['', [Validators.required]],
-      cpfCnpj: [
-        '',
-        [Validators.required, CpfCnpjValidator.validate],
-      ],
+      cpfCnpj: ['', [Validators.required, CpfCnpjValidator.validate]],
       description: ['', [Validators.required]],
       street: ['', Validators.required],
       number: ['', Validators.required],
@@ -62,25 +62,16 @@ export class CreateEstablishmentComponent {
       state: ['', Validators.required],
       zipCode: [
         '',
-        [
-          Validators.required,
-          Validators.pattern(/^[0-9]{5}-[0-9]{3}$/)
-        ],
+        [Validators.required, Validators.pattern(/^[0-9]{5}-[0-9]{3}$/)],
       ],
       phone: [
         '',
-        [
-          Validators.required,
-          Validators.pattern(/^\(\d{2}\)\s\d{4,5}-\d{4}$/)
-        ],
+        [Validators.required, Validators.pattern(/^\(\d{2}\)\s\d{4,5}-\d{4}$/)],
       ],
       serviceType: ['', [Validators.required]],
       image: [''],
     });
   }
-
-
-
 
   public onSubmit() {
     if (this.establishmentForm?.valid) {
@@ -116,43 +107,41 @@ export class CreateEstablishmentComponent {
   public searchCep() {
     const zipCode = this.establishmentForm?.get('zipCode')?.value;
     this.findCEPService.getCep(zipCode).subscribe((cepData) => {
-       // Verifica se cepData não é nulo antes de definir os valores
-       if (cepData) {
-          this.populateAddressFields(cepData);
-       }
+      // Verifica se cepData não é nulo antes de definir os valores
+      if (cepData) {
+        this.populateAddressFields(cepData);
+      }
     });
- }
-
- private populateAddressFields(cepData: Address) {
-  this.establishmentForm.patchValue({
-     street: cepData.logradouro,
-     complement: cepData.complemento,
-     neighborhood: cepData.bairro,
-     city: cepData.localidade,
-     state: cepData.uf,
-     zipCode: cepData.cep,
-  });
-}
-
-  public handleInputChange(e) {
-    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
-    var pattern = /image-*/;
-    var reader = new FileReader();
-    if (!file.type.match(pattern)) {
-      alert('invalid format');
-      return;
-    }
-
-    this.imageName = file.name;
-
-    reader.onload = this._handleReaderLoaded.bind(this);
-    reader.readAsDataURL(file);
   }
 
-  private _handleReaderLoaded(e) {
-    let reader = e.target;
-
-    this.establishmentForm.get('image').setValue(reader.result);
+  private populateAddressFields(cepData: Address) {
+    this.establishmentForm.patchValue({
+      street: cepData.logradouro,
+      complement: cepData.complemento,
+      neighborhood: cepData.bairro,
+      city: cepData.localidade,
+      state: cepData.uf,
+      zipCode: cepData.cep,
+    });
   }
 
+  public uploadFile(event) {
+    const file = event.target.files[0];
+    const filePath = `uploads/${new Date().getTime()}_${file.name}`;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            this.imageName = file.name;
+
+            this.establishmentForm.get('image').setValue(url);
+          });
+        })
+      )
+      .subscribe();
+  }
 }

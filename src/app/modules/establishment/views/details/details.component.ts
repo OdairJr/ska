@@ -30,6 +30,8 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   public establishments$?: Observable<Establishment>;
   public establishmentId?: string;
 
+  public tipos = ['', 'Oficina', 'Funilaria', 'Autopeças'];
+
   @ViewChild('map') mapElement?: ElementRef;
 
   constructor(
@@ -45,19 +47,17 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   public ngOnInit(): void {
     let id = this.route.snapshot.params['id'];
 
-    this.establishments$ = this.establishmentService
-      .getAll()
-      .pipe(
-        map(
-          (establishments) =>
-            establishments.filter((establishment) => establishment.id === id)[0]
-        ),
-        tap((establishment) => {
-          if (establishment) {
-            this.googleMapsService.addMarkerToMap(establishment);
-          }
-        })
-      );
+    this.establishments$ = this.establishmentService.getAll().pipe(
+      map(
+        (establishments) =>
+          establishments.filter((establishment) => establishment.id === id)[0]
+      ),
+      tap((establishment) => {
+        if (establishment) {
+          this.googleMapsService.addMarkerToMap(establishment);
+        }
+      })
+    );
   }
 
   @ViewChild('minhaDiv') minhaDiv!: ElementRef;
