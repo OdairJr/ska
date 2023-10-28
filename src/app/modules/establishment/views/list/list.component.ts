@@ -20,6 +20,8 @@ export class ListComponent implements OnInit {
 
   public searchControl = new FormControl();
 
+  public tipos = ['Mecanica', 'Oficina', 'Funilaria', 'Autopeças'];
+
   constructor(
     private establishmentService: EstablishmentService,
     private router: Router,

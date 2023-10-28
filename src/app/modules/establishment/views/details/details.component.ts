@@ -30,7 +30,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   public establishments$?: Observable<Establishment>;
   public establishmentId?: string;
 
-  public tipos = ['', 'Oficina', 'Funilaria', 'Autopeças'];
+  public tipos = ['Mecanica', 'Oficina', 'Funilaria', 'Autopeças'];
 
   @ViewChild('map') mapElement?: ElementRef;
 
