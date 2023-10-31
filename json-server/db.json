@@ -1,0 +1,58 @@
+{
+  "establishments": [
+    {
+        "id": "4M1cxZYdT2fzL2RH7bbb",
+        "description": "Desenvolvimento de Software",
+        "name": "Oficina do Odair",
+        "cpfCnpj": "444.096.908-92",
+        "serviceType": "2",
+        "phone": "(13) 99999-9999",
+        "image": "https://firebasestorage.googleapis.com/v0/b/lasanha-db.appspot.com/o/uploads%2F1698194873196_DreamShaper_v5_Please_create_a_realistic_animated_image_of_a_g_2.jpg?alt=media&token=14b8ce37-d75b-441d-812c-d433a2053846",
+        "address": {
+            "zipCode": "11706-100",
+            "neighborhood": "Caiçara",
+            "number": "290",
+            "street": "Rua Nestor Ferreira da Rocha Junior",
+            "complement": "",
+            "state": "SP",
+            "city": "Praia Grande"
+        }
+    },
+    {
+        "id": "nVojAZx7JGw9BUOw11RI",
+        "phone": "(11) 95226-9414",
+        "name": "ApoGeo",
+        "description": "Confeitaria ",
+        "serviceType": "0",
+        "address": {
+            "number": "55",
+            "street": "Rua Alexandrita",
+            "zipCode": "05340-010",
+            "state": "SP",
+            "city": "São Paulo",
+            "neighborhood": "Vila Lageado",
+            "complement": "Casa"
+        },
+        "image": "https://firebasestorage.googleapis.com/v0/b/lasanha-db.appspot.com/o/uploads%2F1698195864489_IMG_5036.heic?alt=media&token=36c48121-5480-4a9d-bcac-473be546109f",
+        "cpfCnpj": "388.959.978-83"
+    },
+    {
+        "id": "nVojAZx7JGw9BUOw11RI",
+        "phone": "(11) 95226-9414",
+        "name": "ApoGeo",
+        "description": "Confeitaria ",
+        "serviceType": "0",
+        "address": {
+            "number": "55",
+            "street": "Rua Alexandrita",
+            "zipCode": "05340-010",
+            "state": "SP",
+            "city": "São Paulo",
+            "neighborhood": "Vila Lageado",
+            "complement": "Casa"
+        },
+        "image": "https://firebasestorage.googleapis.com/v0/b/lasanha-db.appspot.com/o/uploads%2F1698195864489_IMG_5036.heic?alt=media&token=36c48121-5480-4a9d-bcac-473be546109f",
+        "cpfCnpj": "388.959.978-83"
+    }
+]
+}

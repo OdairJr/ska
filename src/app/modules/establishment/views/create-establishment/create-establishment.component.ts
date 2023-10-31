@@ -1,6 +1,6 @@
 import { FindCEPService } from './../../../../core/services/find-cep.service';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -16,11 +16,11 @@ import { CpfCnpjValidatorDirective } from 'src/app/core/directives/cpf-cnpj-vali
 import { PhoneMaskDirective } from 'src/app/core/directives/phone-mask.directive';
 import { Establishment } from 'src/app/core/models/establishment.model';
 import { Address } from 'src/app/core/models/address.model';
-import { EstablishmentService } from 'src/app/core/services/establishment.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CpfCnpjValidator } from 'src/app/core/validators/cpf-cnpj.validator';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs';
+import { ESTABLISHMENT_IMPL, IEstablishmentService } from 'src/app/core/interfaces/services';
 
 @Component({
   selector: 'app-create-establishment',
@@ -45,7 +45,7 @@ export class CreateEstablishmentComponent {
 
   constructor(
     private fb: FormBuilder,
-    private establishmentService: EstablishmentService,
+    @Inject(ESTABLISHMENT_IMPL) private establishmentService: IEstablishmentService,
     private router: Router,
     private findCEPService: FindCEPService,
     private storage: AngularFireStorage

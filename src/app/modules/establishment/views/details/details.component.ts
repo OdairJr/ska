@@ -5,11 +5,12 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
+  Inject,
 } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
+import { ESTABLISHMENT_IMPL, IEstablishmentService } from 'src/app/core/interfaces/services';
 import { Establishment } from 'src/app/core/models/establishment.model';
-import { EstablishmentService } from 'src/app/core/services/establishment.service';
 import { GoogleMapsService } from 'src/app/core/services/google-maps.service';
 
 @Component({
@@ -35,7 +36,7 @@ export class DetailsComponent implements OnInit, AfterViewInit {
   @ViewChild('map') mapElement?: ElementRef;
 
   constructor(
-    private establishmentService: EstablishmentService,
+    @Inject(ESTABLISHMENT_IMPL) private establishmentService: IEstablishmentService,
     private route: ActivatedRoute,
     private googleMapsService: GoogleMapsService
   ) {

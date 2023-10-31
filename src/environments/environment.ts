@@ -1,3 +1,5 @@
+import { EstablishmentService } from 'src/app/infrastructure/json-server';
+
 export const environment = {
   production: false,
   envName: 'dev',
@@ -10,4 +12,8 @@ export const environment = {
     messagingSenderId: '2728048523',
   },
   buscaCepUrl: '/api',
+  assetsUrl: '',
+  dependencies: {
+    establishmentService: EstablishmentService,
+  },
 };

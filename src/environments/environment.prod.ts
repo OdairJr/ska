@@ -1,3 +1,5 @@
+import { EstablishmentService } from 'src/app/infrastructure/firebase';
+
 export const environment = {
   production: true,
   envName: 'prod',
@@ -10,4 +12,7 @@ export const environment = {
     messagingSenderId: '2728048523',
   },
   buscaCepUrl: 'https://viacep.com.br',
+  dependencies: {
+    establishmentService: EstablishmentService,
+  },
 };

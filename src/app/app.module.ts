@@ -9,6 +9,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from 'src/environments/environment';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { HttpClientModule } from '@angular/common/http';
+import { ESTABLISHMENT_IMPL } from './core/interfaces/services';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,9 @@ import { HttpClientModule } from '@angular/common/http';
     AngularFireStorageModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    { provide: ESTABLISHMENT_IMPL, useClass: environment.dependencies.establishmentService }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
