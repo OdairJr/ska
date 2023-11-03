@@ -24,3 +24,11 @@
   color: black;
   padding: 8px 0;
 }
+
+.alert-fixed {
+  position:fixed;
+  top: 32px;
+  left: 0px;
+  z-index:9999;
+  width: 100%;
+}

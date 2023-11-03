@@ -3,7 +3,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
-import { ESTABLISHMENT_IMPL, IEstablishmentService } from 'src/app/core/interfaces/services';
+import {
+  ESTABLISHMENT_IMPL,
+  IEstablishmentService,
+} from 'src/app/core/interfaces/services';
 import { Establishment } from 'src/app/core/models/establishment.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -23,7 +26,8 @@ export class ListComponent implements OnInit {
   public tipos = ['Mecanica', 'Oficina', 'Funilaria', 'Autopeças'];
 
   constructor(
-    @Inject(ESTABLISHMENT_IMPL) private establishmentService: IEstablishmentService,
+    @Inject(ESTABLISHMENT_IMPL)
+    private establishmentService: IEstablishmentService,
     private router: Router,
     public authService: AuthService
   ) {}
@@ -37,8 +41,6 @@ export class ListComponent implements OnInit {
         this.initFilter();
       },
     });
-
-
   }
 
   private initFilter() {
@@ -66,4 +68,18 @@ export class ListComponent implements OnInit {
   }
 
   public applyFilterChange() {}
+
+  public onDeleteEstablishment(establishmentId: string) {
+    console.log(establishmentId);
+
+    this.establishmentService.delete(establishmentId).subscribe({
+      next: () => {
+        console.log('sucesso');
+
+      },
+      error: (error) => {
+        console.log('erro');
+      },
+    });
+  }
 }

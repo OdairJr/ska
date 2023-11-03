@@ -1,4 +1,4 @@
-import { EstablishmentService } from 'src/app/infrastructure/json-server';
+import { EstablishmentService } from 'src/app/infrastructure/firebase';
 
 export const environment = {
   production: false,
