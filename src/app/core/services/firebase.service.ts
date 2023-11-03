@@ -4,12 +4,16 @@ import { map, Observable } from 'rxjs';
 import { BaseModel } from '../models/base.model';
 import { from } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class FireBaseService<T extends BaseModel> {
 
-  constructor(private _firestore: AngularFirestore, @Inject(String) private _collectionName: string) { }
+  constructor(private _firestore: AngularFirestore,
+     @Inject(String) private _collectionName: string,
+
+     ) { }
 
   public getAll(): Observable<T[]> {
     return this._firestore.collection<T>(this._collectionName).snapshotChanges()
@@ -37,4 +41,6 @@ export class FireBaseService<T extends BaseModel> {
   delete(objectId: string): Observable<void> {
     return from(this._firestore.doc(`${this._collectionName}/${objectId}`).delete());
   }
+
+
 }

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
 import { Establishment } from 'src/app/core/models/establishment.model';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -25,6 +25,7 @@ export class ListComponent implements OnInit {
   constructor(
     private establishmentService: EstablishmentService,
     private router: Router,
+    private route: ActivatedRoute,
     public authService: AuthService
   ) {}
 
@@ -35,6 +36,9 @@ export class ListComponent implements OnInit {
         this.initFilter();
       },
     });
+
+
+
 
 
   }
@@ -64,4 +68,10 @@ export class ListComponent implements OnInit {
   }
 
   public applyFilterChange() {}
+
+  deleteEstablishment(id:string){
+     this.establishmentService.delete(id).subscribe(()=>{
+      this.router.navigate([''])
+  })
+ }
 }
