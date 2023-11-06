@@ -8,6 +8,7 @@ import {
   IEstablishmentService,
 } from 'src/app/core/interfaces/services';
 import { Establishment } from 'src/app/core/models/establishment.model';
+import { AlertService } from 'src/app/core/services/alert.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -29,7 +30,8 @@ export class ListComponent implements OnInit {
     @Inject(ESTABLISHMENT_IMPL)
     private establishmentService: IEstablishmentService,
     private router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    public alertService: AlertService,
   ) {}
 
   public ngOnInit(): void {
@@ -70,12 +72,14 @@ export class ListComponent implements OnInit {
   public applyFilterChange() {}
 
   public onDeleteEstablishment(establishmentId: string) {
-    console.log(establishmentId);
 
     this.establishmentService.delete(establishmentId).subscribe({
       next: () => {
-        console.log('sucesso');
-
+        this.alertService.showAlert({
+          message: 'Estabelecimento excluído com sucesso!',
+          type: 'success',
+          isOpned: true
+        });
       },
       error: (error) => {
         console.log('erro');

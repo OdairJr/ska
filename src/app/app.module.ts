@@ -10,9 +10,10 @@ import { environment } from 'src/environments/environment';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { HttpClientModule } from '@angular/common/http';
 import { ESTABLISHMENT_IMPL } from './core/interfaces/services';
+import { AlertComponent } from './modules/commons/alert/alert.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AlertComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

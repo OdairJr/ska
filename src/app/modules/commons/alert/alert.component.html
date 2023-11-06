@@ -1,0 +1,7 @@
+<ng-container *ngIf="alertConfiguration$ | async as alertConfiguration">
+  <div class="alert-fixed" *ngIf="alertConfiguration.isOpned">
+    <div [class]="'alert alert-' + alertConfiguration.type +' mx-3'" role="alert">
+      {{ alertConfiguration.message }}
+    </div>
+  </div>
+</ng-container>
