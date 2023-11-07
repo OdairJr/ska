@@ -15,6 +15,7 @@ const routes: Routes = [
       { path: '', loadComponent: () => import('./modules/establishment/views/list/list.component').then(m => m.ListComponent) },
       { path: 'create', loadComponent: () => import('./modules/establishment/views/create-establishment/create-establishment.component').then(m => m.CreateEstablishmentComponent) },
       { path: 'details/:id', loadComponent: () => import('./modules/establishment/views/details/details.component').then(m => m.DetailsComponent) },
+      { path: 'edit/:id', loadComponent: () => import('./modules/establishment/views/edit-establishment/edit-establishment.component').then(m => m.EditEstablishmentComponent) },
     ], canActivate: [AuthGuard]
   },
   { path: '', redirectTo: 'sign-in', pathMatch: 'full' },

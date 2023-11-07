@@ -50,7 +50,7 @@
               <p>{{ item.description }}</p>
             </div>
             <div class="justify-content-around d-flex">
-              <a class="link-primary">Editar</a>
+              <a class="link-primary" (click)="goToEdit(item.id)">Editar</a>
               <a class="link-danger" (click)="onDeleteEstablishment(item.id)"
                 >Excluir</a
               >

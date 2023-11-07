@@ -29,9 +29,12 @@ export class FireBaseService<T extends BaseModel> {
     return from(promise).pipe(map((response) => response.id));
   }
 
-  update(object: T) {
-    delete object.id;
-    this._firestore.doc(`${this._collectionName}/${object.id}`).update(object);
+  update(object: T): Observable<void> {
+    // delete object.id;
+    console.log(object);
+
+    const promise = this._firestore.doc(`${this._collectionName}/${object.id}`).update(object);
+    return from(promise);
   }
 
   delete(objectId: string): Observable<void> {

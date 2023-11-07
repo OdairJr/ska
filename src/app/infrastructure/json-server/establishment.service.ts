@@ -18,7 +18,7 @@ export class EstablishmentService implements IEstablishmentService  {
   create(establishment: Establishment): Observable<string> {
     throw new Error('Method not implemented.');
   }
-  update(establishment: Establishment): void {
+  update(establishment: Establishment): Observable<void> {
     throw new Error('Method not implemented.');
   }
   delete(objectId: string): Observable<void> {

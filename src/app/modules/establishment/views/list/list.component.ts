@@ -37,8 +37,6 @@ export class ListComponent implements OnInit {
   public ngOnInit(): void {
     this.establishmentService.getAll().subscribe({
       next: (resp) => {
-        console.log(resp);
-
         this.establishments = resp;
         this.initFilter();
       },
@@ -67,6 +65,12 @@ export class ListComponent implements OnInit {
     if (!id) return console.error('No id provided');
 
     this.router.navigate(['/establishment/details', id]);
+  }
+
+  public goToEdit(id?: string) {
+    if (!id) return console.error('No id provided');
+
+    this.router.navigate(['/establishment/edit', id]);
   }
 
   public applyFilterChange() {}

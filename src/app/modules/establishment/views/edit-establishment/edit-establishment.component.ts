@@ -1,15 +1,14 @@
 import { FindCEPService } from './../../../../core/services/find-cep.service';
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   Validators,
   FormsModule,
   ReactiveFormsModule,
-  MaxLengthValidator,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CepMaskDirective } from 'src/app/core/directives/cep-mask.directive';
 import { CpfCnpjMaskDirective } from 'src/app/core/directives/cpf-cnpj-mask.directive';
 import { CpfCnpjValidatorDirective } from 'src/app/core/directives/cpf-cnpj-validator.directive';
@@ -27,10 +26,10 @@ import {
 import { AlertService } from 'src/app/core/services/alert.service';
 
 @Component({
-  selector: 'app-create-establishment',
+  selector: 'app-edit-establishment',
   standalone: true,
-  templateUrl: './create-establishment.component.html',
-  styleUrls: ['./create-establishment.component.scss'],
+  templateUrl: './edit-establishment.component.html',
+  styleUrls: ['./edit-establishment.component.scss'],
   imports: [
     CommonModule,
     RouterModule,
@@ -43,15 +42,17 @@ import { AlertService } from 'src/app/core/services/alert.service';
     CepMaskDirective,
   ],
 })
-export class CreateEstablishmentComponent {
+export class EditEstablishmentComponent implements OnInit {
   public establishmentForm: FormGroup;
   public imageName = 'Selecione uma foto';
+  public id?: string;
 
   constructor(
     private fb: FormBuilder,
     @Inject(ESTABLISHMENT_IMPL)
     private establishmentService: IEstablishmentService,
     private router: Router,
+    private route: ActivatedRoute,
     private findCEPService: FindCEPService,
     private storage: AngularFireStorage,
     private alertService: AlertService
@@ -79,17 +80,29 @@ export class CreateEstablishmentComponent {
     });
   }
 
+  public ngOnInit(): void {
+    this.id = this.route.snapshot.params['id'];
+
+    this.establishmentService.getAll().subscribe({
+      next: (establishments) => {
+        const establishment = establishments.filter(
+          (establishment) => establishment.id === this.id
+        )[0];
+        this.populateAllFields(establishment);
+      },
+    });
+  }
+
   public onSubmit() {
     if (this.establishmentForm?.valid) {
       const establishment = this.mapFormToEstablishment();
-      this.establishmentService.create(establishment).subscribe({
+      this.establishmentService.update(establishment).subscribe({
         next: () => {
           this.alertService.showAlert({
             isOpned: true,
-            message: 'Estabelecimento criado com sucesso!',
+            message: 'Estabelecimento editado com sucesso!',
             type: 'success',
           });
-
           this.router.navigate(['/establishment']);
         },
       });
@@ -98,6 +111,7 @@ export class CreateEstablishmentComponent {
 
   private mapFormToEstablishment(): Establishment {
     return {
+      id: this.id,
       name: this.establishmentForm?.get('name')?.value,
       cpfCnpj: this.establishmentForm?.get('cpfCnpj')?.value,
       description: this.establishmentForm?.get('description')?.value,
@@ -155,5 +169,23 @@ export class CreateEstablishmentComponent {
         })
       )
       .subscribe();
+  }
+
+  private populateAllFields(estab: Establishment) {
+    this.establishmentForm.patchValue({
+      name: estab.name,
+      cpfCnpj: estab.cpfCnpj,
+      description: estab.description,
+      street: estab.address.street,
+      number: estab.address.number,
+      complement: estab.address.complement,
+      neighborhood: estab.address.neighborhood,
+      city: estab.address.city,
+      state: estab.address.state,
+      zipCode: estab.address.zipCode,
+      phone: estab.phone,
+      serviceType: estab.serviceType,
+      image: estab.image,
+    });
   }
 }
